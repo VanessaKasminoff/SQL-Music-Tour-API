@@ -2,12 +2,16 @@
 const artists = require('express').Router()
 const db = require('../models')
 const { Artists } = db 
+const {Op} = require('sequelize')
 
 // FIND ALL ARTISTS
 artists.get('/', async (req, res) => {
     try {
         const foundArtists = await Artists.findAll({
-            order: [['available_start_time', 'ASC']]
+            order: [['available_start_time', 'ASC']],
+            where: {
+                name: {[Op.like]: `%${req.query.name ? req.query.name : ''}%`}
+            }
         })
         res.status(200).json(foundArtists)
     } catch (error) {
