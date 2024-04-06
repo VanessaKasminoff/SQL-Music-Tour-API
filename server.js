@@ -15,9 +15,13 @@ app.get('/', (req, res) => {
     })
 })
 
-// CONTROLLERS 
-const artistsController = require('./controllers/artists_controller')
+//ARTISTS ROUTE
+const artistsController = require('./controllers/artists_controller.js')
 app.use('/artists', artistsController)
+
+//EVENTS ROUTE
+const eventController = require('./controllers/event_controller.js')
+app.use('/events', eventController)
 
 // LISTEN
 app.listen(process.env.PORT, () => {
