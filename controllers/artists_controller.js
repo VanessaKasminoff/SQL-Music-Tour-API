@@ -1,7 +1,7 @@
 // DEPENDENCIES
 const artists = require('express').Router()
 const db = require('../models')
-const { Artist } = db 
+const { Artist, Meet_Greet, Event, Set_Time } = db 
 const {Op} = require('sequelize')
 
 // FIND ALL ARTISTS
@@ -20,10 +20,30 @@ artists.get('/', async (req, res) => {
 })
 
 //FIND A SPECIFIC ARTIST
-artists.get('/:id', async (req, res) => {
+artists.get('/:name', async (req, res) => {
     try {
         const foundArtist = await Artist.findOne({
-            where: {artist_id: req.params.id}
+            where: {name: req.params.name},
+            include: [
+                {
+                    model: Meet_Greet, 
+                    as: "meet_greets",
+                    include: {
+                        model: Event, 
+                        as: "events",
+                        where: {name: {[Op.like]: `%${req.query.event ? req.query.event : ''}%`}}
+                    }
+                },
+                {
+                    model: Set_Time,
+                    as: "set_times",
+                    include: {
+                        model: Event, 
+                        as: "events",
+                        where: {name: {[Op.like]: `%${req.query.event ? req.query.event : ''}%`}}
+                    }
+                }
+            ]
         })
         res.status(200).json(foundArtist)
     } catch (error) {
