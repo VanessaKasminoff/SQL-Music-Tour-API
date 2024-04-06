@@ -9,10 +9,24 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
+    static associate({Artist, Event, Stage}) {
+      Set_Time.belongsTo(Artist, {
+        foreignKey: "artist_id",
+        as: "artists"
+      })
+
+      Set_Time.belongsTo(Event, {
+        foreignKey: "event_id",
+        as: "events"
+      })
+
+      Set_Time.belongsTo(Stage, {
+        foreignKey: "stage_id",
+        as: "stages"
+      })
     }
   }
+  
   Set_Time.init({
     set_time_id: {
       allowNull: false,
@@ -38,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Set_Time',
-    tableName: 'set_time',
+    tableName: 'set_times',
     timestamps: false
   });
   return Set_Time;
