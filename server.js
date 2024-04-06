@@ -23,6 +23,10 @@ app.use('/artists', artistsController)
 const eventController = require('./controllers/event_controller.js')
 app.use('/events', eventController)
 
+//STAGES ROUTE
+const stageController = require('./controllers/stage_controller.js')
+app.use('/stages', stageController)
+
 // LISTEN
 app.listen(process.env.PORT, () => {
     console.log(`🎸 Rockin' on port: ${process.env.PORT}`)
